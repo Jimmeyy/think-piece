@@ -8,24 +8,36 @@ class Application extends Component {
     posts: [],
   };
 
+  unsubscribe = null;
+
   async componentDidMount() {
-    const snapshot = await firestore.collection('posts').get();
-    const posts = snapshot.docs.map(doc => collectIdsAndData(doc));
-    this.setState({ posts });
+    // const snapshot = await firestore.collection('posts').get();
+    // const posts = snapshot.docs.map(doc => collectIdsAndData(doc));
+    // this.setState({ posts });
+
+    this.unsubscribe = firestore.collection('posts').onSnapshot(snapshot => {
+      const posts = snapshot.docs.map(doc => collectIdsAndData(doc));
+      this.setState({ posts });
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   handleCreate = async post => {
-    const docRef = await firestore.collection('posts').add(post);
-    const doc = await docRef.get();
-    const newPost = {
-      id: doc.id,
-      ...doc.data()
-    };
+    await firestore.collection('posts').add(post);
+    // const docRef = await firestore.collection('posts').add(post);
+    // const doc = await docRef.get();
+    // const newPost = {
+    //   id: doc.id,
+    //   ...doc.data()
+    // };
 
-    const { posts } = this.state;
-    this.setState({
-      posts: [newPost, ...posts]
-    })
+    // const { posts } = this.state;
+    // this.setState({
+    //   posts: [newPost, ...posts]
+    // })
   };
 
   handleRemove = async id => {
