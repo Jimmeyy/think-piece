@@ -25,27 +25,27 @@ class Application extends Component {
     this.unsubscribe();
   }
 
-  handleCreate = async post => {
-    await firestore.collection('posts').add(post);
-    // const docRef = await firestore.collection('posts').add(post);
-    // const doc = await docRef.get();
-    // const newPost = {
-    //   id: doc.id,
-    //   ...doc.data()
-    // };
+  // handleCreate = async post => {
+  //   await firestore.collection('posts').add(post);
+  //   // const docRef = await firestore.collection('posts').add(post);
+  //   // const doc = await docRef.get();
+  //   // const newPost = {
+  //   //   id: doc.id,
+  //   //   ...doc.data()
+  //   // };
 
-    // const { posts } = this.state;
-    // this.setState({
-    //   posts: [newPost, ...posts]
-    // })
-  };
+  //   // const { posts } = this.state;
+  //   // this.setState({
+  //   //   posts: [newPost, ...posts]
+  //   // })
+  // };
 
-  handleRemove = async id => {
-    const { posts } = this.state;
-    await firestore.doc(`posts/${id}`).delete();
-    const newPosts = posts.filter(post => post.id !== id);
-    this.setState({ posts: newPosts });
-  }
+  // handleRemove = async id => {
+  //   const { posts } = this.state;
+  //   await firestore.doc(`posts/${id}`).delete();
+  //   const newPosts = posts.filter(post => post.id !== id);
+  //   this.setState({ posts: newPosts });
+  // }
 
   render() {
     const { posts } = this.state;
