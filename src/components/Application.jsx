@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Posts from './Posts';
 import { firestore } from '../firebase';
+import { collectIdsAndData } from '../utils';
 
 class Application extends Component {
   state = {
@@ -9,18 +10,8 @@ class Application extends Component {
 
   async componentDidMount() {
     const snapshot = await firestore.collection('posts').get();
-
-    const posts = snapshot.docs.map(snap => {
-      return {
-        id: snap.id,
-        title: snap.data().title,
-        content: snap.data().content
-      }
-    });
-
-    this.setState(prevState => ({
-      posts
-    }))
+    const posts = snapshot.docs.map(doc => collectIdsAndData(doc));
+    this.setState({ posts });
   }
 
   handleCreate = post => {
