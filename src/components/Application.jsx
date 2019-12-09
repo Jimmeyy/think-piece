@@ -14,9 +14,18 @@ class Application extends Component {
     this.setState({ posts });
   }
 
-  handleCreate = post => {
+  handleCreate = async post => {
+    const docRef = await firestore.collection('posts').add(post);
+    const doc = await docRef.get();
+    const newPost = {
+      id: doc.id,
+      ...doc.data()
+    };
+
     const { posts } = this.state;
-    this.setState({ posts: [post, ...posts] });
+    this.setState({
+      posts: [newPost, ...posts]
+    })
   };
 
   render() {
