@@ -1,28 +1,38 @@
 import React, { Component } from 'react';
 import Posts from './Posts';
-import { firestore } from '../firebase';
+import { firestore, auth } from '../firebase';
 import { collectIdsAndData } from '../utils';
+import CurrentUser from './CurrentUser';
+import SignIn from './SignIn';
 
 class Application extends Component {
   state = {
     posts: [],
+    user: null,
+    userLoaded: false
   };
 
-  unsubscribe = null;
+  unsubscribeFromFirestore = null;
+  unsubscribeFromAuth = null;
 
   async componentDidMount() {
     // const snapshot = await firestore.collection('posts').get();
     // const posts = snapshot.docs.map(doc => collectIdsAndData(doc));
     // this.setState({ posts });
 
-    this.unsubscribe = firestore.collection('posts').onSnapshot(snapshot => {
+    this.unsubscribeFromFirestore = firestore.collection('posts').onSnapshot(snapshot => {
       const posts = snapshot.docs.map(doc => collectIdsAndData(doc));
       this.setState({ posts });
     });
+
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
+      this.setState({ user, userLoaded: true });
+    })
   }
 
   componentWillUnmount() {
-    this.unsubscribe();
+    this.unsubscribeFromFirestore();
+    this.unsubscribeFromAuth();
   }
 
   // handleCreate = async post => {
@@ -48,11 +58,13 @@ class Application extends Component {
   // }
 
   render() {
-    const { posts } = this.state;
+    const { posts, user, userLoaded } = this.state;
+    const userInformation = user ? <CurrentUser {...user} /> : <SignIn />
 
     return (
       <main className="Application">
         <h1>Think Piece</h1>
+        {userLoaded && userInformation}
         <Posts posts={posts} onCreate={this.handleCreate} onDelete={this.handleRemove} />
       </main>
     );
