@@ -3,8 +3,7 @@ import { signOut } from '../firebase';
 
 import moment from 'moment';
 
-const CurrentUser = ({ displayName, photoURL, email, createdAt, children, ...props }) => {
-  console.log(props.email);
+const CurrentUser = ({ displayName, photoURL, email, createdAt, children }) => {
   return (
     <section className="CurrentUser">
       <div className="CurrentUser--profile">
