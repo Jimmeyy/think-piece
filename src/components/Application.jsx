@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import Posts from './Posts';
-import { firestore, auth, createUserProfileDocument } from '../firebase';
-import { collectIdsAndData } from '../utils';
-import CurrentUser from './CurrentUser';
-import SignIn from './SignIn';
+import React, { Component } from "react";
+import Posts from "./Posts";
+import { firestore, auth, createUserProfileDocument } from "../firebase";
+import { collectIdsAndData } from "../utils";
+import CurrentUser from "./CurrentUser";
+import SignInAndSignUp from "./SignInAndSignUp";
 
 class Application extends Component {
   state = {
@@ -16,16 +16,17 @@ class Application extends Component {
   unsubscribeFromAuth = null;
 
   async componentDidMount() {
-
-    this.unsubscribeFromFirestore = firestore.collection('posts').onSnapshot(snapshot => {
-      const posts = snapshot.docs.map(doc => collectIdsAndData(doc));
-      this.setState({ posts });
-    });
+    this.unsubscribeFromFirestore = firestore
+      .collection("posts")
+      .onSnapshot(snapshot => {
+        const posts = snapshot.docs.map(doc => collectIdsAndData(doc));
+        this.setState({ posts });
+      });
 
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       const user = await createUserProfileDocument(userAuth);
       this.setState({ user, userLoaded: true });
-    })
+    });
   }
 
   componentWillUnmount() {
@@ -35,7 +36,11 @@ class Application extends Component {
 
   render() {
     const { posts, user, userLoaded } = this.state;
-    const userInformation = user ? <CurrentUser {...user} /> : <SignIn />
+    const userInformation = user ? (
+      <CurrentUser {...user} />
+    ) : (
+      <SignInAndSignUp user={user ? true : false} />
+    );
 
     return (
       <main className="Application">
