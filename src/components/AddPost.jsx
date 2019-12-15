@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { firestore, auth } from '../firebase';
+import React, { Component } from "react";
+import { firestore, auth } from "../firebase";
 
 class AddPost extends Component {
-  state = { title: '', content: '' };
+  state = { title: "", content: "" };
 
   handleChange = event => {
     const { name, value } = event.target;
@@ -12,24 +12,29 @@ class AddPost extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    const { title, content } = this.state;
-    const { uid, displayName, email, photoURL } = auth.currentUser;
+    if (auth.currentUser) {
+      const { title, content } = this.state;
+      const { uid, displayName, email, photoURL } = auth.currentUser;
 
-    const post = {
-      title,
-      content,
-      user: {
-        uid, displayName, email, photoURL
-      },
-      favorites: 0,
-      stars: 0,
-      comments: 0,
-      createdAt: new Date(),
+      const post = {
+        title,
+        content,
+        user: {
+          uid,
+          displayName,
+          email,
+          photoURL
+        },
+        favorites: 0,
+        stars: 0,
+        comments: 0,
+        createdAt: new Date()
+      };
+
+      firestore.collection("posts").add(post);
     }
 
-    firestore.collection('posts').add(post);
-
-    this.setState({ title: '', content: '' });
+    this.setState({ title: "", content: "" });
   };
 
   render() {
