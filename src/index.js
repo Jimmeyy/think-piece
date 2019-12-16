@@ -1,8 +1,13 @@
 import React from 'react';
 import { render } from 'react-dom';
-
-import './index.scss';
-
 import Application from './components/Application';
+import './index.scss';
+import PostsProvider from './providers/PostsProvider';
 
-render(<Application />, document.getElementById('root'));
+
+render(
+    <PostsProvider>
+        <Application />
+    </PostsProvider>,
+    document.getElementById('root')
+);

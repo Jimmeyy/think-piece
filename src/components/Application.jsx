@@ -7,22 +7,13 @@ import SignInAndSignUp from "./SignInAndSignUp";
 
 class Application extends Component {
   state = {
-    posts: [],
     user: null,
     userLoaded: false
   };
 
-  unsubscribeFromFirestore = null;
   unsubscribeFromAuth = null;
 
   async componentDidMount() {
-    this.unsubscribeFromFirestore = firestore
-      .collection("posts")
-      .onSnapshot(snapshot => {
-        const posts = snapshot.docs.map(doc => collectIdsAndData(doc));
-        this.setState({ posts });
-      });
-
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       const user = await createUserProfileDocument(userAuth);
       this.setState({ user, userLoaded: true });
@@ -30,23 +21,22 @@ class Application extends Component {
   }
 
   componentWillUnmount() {
-    this.unsubscribeFromFirestore();
     this.unsubscribeFromAuth();
   }
 
   render() {
-    const { posts, user, userLoaded } = this.state;
+    const { user, userLoaded } = this.state;
     const userInformation = user ? (
       <CurrentUser {...user} />
     ) : (
-      <SignInAndSignUp user={user ? true : false} />
-    );
+        <SignInAndSignUp user={user ? true : false} />
+      );
 
     return (
       <main className="Application">
         <h1>Think Piece</h1>
         {userLoaded && userInformation}
-        <Posts posts={posts} />
+        <Posts />
       </main>
     );
   }
