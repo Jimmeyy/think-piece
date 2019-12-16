@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Posts from "./Posts";
 import UserDashboard from './UserDashboard';
+import { Switch, Route, Link } from 'react-router-dom';
+import UserProfilePage from './UserProfilePage';
 
 class Application extends Component {
 
@@ -8,9 +10,12 @@ class Application extends Component {
 
     return (
       <main className="Application">
-        <h1>Think Piece</h1>
+        <Link to="/"><h1>Think Piece</h1></Link>
         <UserDashboard />
-        <Posts />
+        <Switch>
+          <Route exact path="/" component={Posts} />
+          <Route exact path="/profile" component={UserProfilePage} />
+        </Switch>
       </main>
     );
   }
