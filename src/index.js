@@ -3,11 +3,14 @@ import { render } from 'react-dom';
 import Application from './components/Application';
 import './index.scss';
 import PostsProvider from './providers/PostsProvider';
+import UserProvider from './providers/UserProvider';
 
 
 render(
-    <PostsProvider>
-        <Application />
-    </PostsProvider>,
+    <UserProvider>
+        <PostsProvider>
+            <Application />
+        </PostsProvider>
+    </UserProvider>,
     document.getElementById('root')
 );
