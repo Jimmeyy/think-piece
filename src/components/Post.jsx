@@ -43,9 +43,7 @@ const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
           <p>{moment(createdAt.toDate()).calendar()}</p>
         </div>
         <div>
-          <button className="star" onClick={update}>
-            Star
-          </button>
+          {currentUser && <button className="star" onClick={update}>Star</button>}
           {belongsToCurrentUser(currentUser, user) && <button className="delete" onClick={remove}>Delete</button>}
         </div>
       </div>
