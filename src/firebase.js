@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
+import "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCkUIaXf-SsKxtBOCJ-NHEZdtSNmno3YhI",
@@ -63,5 +64,8 @@ export const getUserDocument = async uid => {
     console.error("Error fetching user", error.message);
   }
 };
+
+// Firebase storage
+export const storage = firebase.storage();
 
 export default firebase;
