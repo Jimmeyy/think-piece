@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Post from './Post';
 import Comments from './Comments';
 import { firestore } from '../firebase';
@@ -36,7 +36,7 @@ class PostPage extends Component {
         this.unsubscribeFromComments = this.commentsRef.onSnapshot(snapshot => {
             const comments = snapshot.docs.map(collectIdsAndData);
             this.setState({ comments });
-        })
+        });
     }
 
     componentWillUnmount() {
@@ -72,4 +72,4 @@ class PostPage extends Component {
     }
 }
 
-export default withRouter(PostPage);
+export default PostPage;
