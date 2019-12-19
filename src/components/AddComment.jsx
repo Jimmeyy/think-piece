@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import withUser from './withUser';
+
 
 class AddComment extends Component {
   state = { content: '' };
@@ -10,6 +12,10 @@ class AddComment extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    const { user, onCreate } = this.props;
+    const { content } = this.state;
+
+    onCreate(content, user.user);
 
     this.setState({ content: '' });
   };
@@ -31,4 +37,4 @@ class AddComment extends Component {
   }
 }
 
-export default AddComment;
+export default withUser(AddComment);

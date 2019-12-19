@@ -44,9 +44,9 @@ class PostPage extends Component {
         this.unsubscribeFromComments();
     }
 
-    createComment = (comment, user) => {
-        this.commentsRef.add({
-            ...comment,
+    createComment = async (comment, user) => {
+        await this.commentsRef.add({
+            comment,
             user
         });
     };
